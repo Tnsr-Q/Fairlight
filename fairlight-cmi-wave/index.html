@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fairlight CMI Waveform Monitor</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #39ff14;
+            font-family: "Courier New", monospace;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .header {
+            margin-bottom: 30px;
+            border-bottom: 2px solid #39ff14;
+            padding-bottom: 20px;
+        }
+        
+        h1 {
+            color: #39ff14;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 2.5em;
+            margin: 0;
+            text-shadow: 0 0 10px #39ff14;
+        }
+        
+        .subtitle {
+            color: #39ff14;
+            font-size: 1.2em;
+            margin-top: 10px;
+            opacity: 0.8;
+        }
+        
+        .demos {
+            margin: 40px 0;
+        }
+        
+        .demo-link {
+            display: inline-block;
+            margin: 20px;
+            padding: 15px 30px;
+            border: 2px solid #39ff14;
+            color: #39ff14;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            background-color: transparent;
+        }
+        
+        .demo-link:hover {
+            background-color: #39ff14;
+            color: #000000;
+            box-shadow: 0 0 20px #39ff14;
+        }
+        
+        .description {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: left;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        
+        .feature {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+        
+        .feature::before {
+            content: "▶ ";
+            color: #39ff14;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Fairlight CMI Waveform Monitor</h1>
+            <div class="subtitle">Retro Digital Sampler Visualization</div>
+        </div>
+        
+        <div class="demos">
+            <a href="standalone-demo.html" class="demo-link">Standalone Demo</a>
+            <a href="demo.html" class="demo-link">Enhanced Demo</a>
+        </div>
+        
+        <div class="description">
+            <p>A retro-styled waveform visualizer inspired by the classic Fairlight CMI digital sampler from the 1980s. This project demonstrates modern web technologies with authentic vintage aesthetics.</p>
+            
+            <div class="feature">Authentic 1980s CMI styling with neon green on black</div>
+            <div class="feature">Interactive HTML5 Canvas waveform rendering</div>
+            <div class="feature">Retro monospace typography and grid display</div>
+            <div class="feature">Real-time visualization with channel selection</div>
+            <div class="feature">Built with Quarto dashboard tools</div>
+            
+            <p style="margin-top: 30px; text-align: center; opacity: 0.7;">
+                Built with the copilot-quarto tool suite for automated dashboard creation.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
