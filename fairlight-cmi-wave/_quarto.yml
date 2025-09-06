@@ -1,0 +1,14 @@
+project:
+  type: website
+  output-dir: _site
+website:
+  title: fairlight-cmi-wave
+  navbar:
+    left:
+      - href: index.qmd
+        text: Index
+format:
+  html:
+    theme: "[default, custom.scss]"
+    css: styles.css
+    toc: true

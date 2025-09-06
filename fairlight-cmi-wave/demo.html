@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fairlight CMI Waveform Monitor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            background-color: #000000;
+            color: #39ff14;
+            font-family: "Share Tech Mono", monospace;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #39ff14;
+            padding-bottom: 20px;
+        }
+        
+        h1 {
+            color: #39ff14;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 2.5em;
+            margin: 0;
+            text-shadow: 0 0 10px #39ff14;
+        }
+        
+        .subtitle {
+            color: #39ff14;
+            font-size: 1.2em;
+            margin-top: 10px;
+            opacity: 0.8;
+        }
+        
+        .controls {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #39ff14;
+            background-color: rgba(57, 255, 20, 0.05);
+        }
+        
+        .controls label {
+            color: #39ff14;
+            display: block;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .controls select {
+            background-color: #000000;
+            border: 1px solid #39ff14;
+            color: #39ff14;
+            font-family: "Share Tech Mono", monospace;
+            padding: 10px;
+            width: 200px;
+        }
+        
+        .controls select:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+        }
+        
+        .waveform-container {
+            border: 2px solid #39ff14;
+            padding: 20px;
+            margin: 20px 0;
+            background-color: rgba(57, 255, 20, 0.02);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #39ff14;
+            opacity: 0.6;
+        }
+        
+        #waveform-plot {
+            width: 100%;
+            height: 500px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Fairlight CMI</h1>
+            <div class="subtitle">Waveform Monitor</div>
+        </div>
+        
+        <div class="controls">
+            <label for="channel-select">Channel (locked to one):</label>
+            <select id="channel-select">
+                <option value="amplitude">amplitude</option>
+            </select>
+        </div>
+        
+        <div class="waveform-container">
+            <div id="waveform-plot"></div>
+        </div>
+        
+        <div class="footer">
+            <p>Fairlight CMI Digital Audio Workstation • Retro Waveform Visualizer</p>
+        </div>
+    </div>
+
+    <script>
+        // Sample waveform data
+        const waveData = {
+            time: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+            amplitude: [0, 0.2, -0.4, 0.7, -0.3, 0.5, -0.6, 0.9, -0.1, 0]
+        };
+        
+        function createWaveformPlot() {
+            const trace = {
+                x: waveData.time,
+                y: waveData.amplitude,
+                type: 'scatter',
+                mode: 'lines',
+                line: {
+                    color: '#39ff14',
+                    width: 3
+                },
+                name: 'Waveform'
+            };
+            
+            const layout = {
+                title: {
+                    text: 'FAIRLIGHT CMI WAVEFORM',
+                    font: {
+                        family: 'Share Tech Mono',
+                        size: 20,
+                        color: '#39ff14'
+                    }
+                },
+                paper_bgcolor: '#000000',
+                plot_bgcolor: '#000000',
+                font: {
+                    family: 'Share Tech Mono',
+                    color: '#39ff14'
+                },
+                xaxis: {
+                    title: {
+                        text: 'TIME',
+                        font: {
+                            family: 'Share Tech Mono',
+                            color: '#39ff14'
+                        }
+                    },
+                    gridcolor: 'rgba(57, 255, 20, 0.2)',
+                    zerolinecolor: 'rgba(57, 255, 20, 0.4)',
+                    tickfont: {
+                        family: 'Share Tech Mono',
+                        color: '#39ff14'
+                    }
+                },
+                yaxis: {
+                    title: {
+                        text: 'AMPLITUDE',
+                        font: {
+                            family: 'Share Tech Mono',
+                            color: '#39ff14'
+                        }
+                    },
+                    gridcolor: 'rgba(57, 255, 20, 0.2)',
+                    zerolinecolor: 'rgba(57, 255, 20, 0.4)',
+                    tickfont: {
+                        family: 'Share Tech Mono',
+                        color: '#39ff14'
+                    }
+                },
+                margin: {
+                    l: 80,
+                    r: 40,
+                    t: 80,
+                    b: 80
+                }
+            };
+            
+            const config = {
+                displayModeBar: true,
+                modeBarButtonsToRemove: ['toImage', 'sendDataToCloud'],
+                displaylogo: false
+            };
+            
+            Plotly.newPlot('waveform-plot', [trace], layout, config);
+        }
+        
+        // Initialize the plot when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            createWaveformPlot();
+        });
+        
+        // Update plot when channel selection changes (placeholder for interactivity)
+        document.getElementById('channel-select').addEventListener('change', function() {
+            // In a real implementation, this would update the data source
+            createWaveformPlot();
+        });
+    </script>
+</body>
+</html>
