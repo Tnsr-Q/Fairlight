@@ -4,8 +4,29 @@ A GitHub Copilot extension that provides specialized tools for creating and mana
 
 ## 🚀 Quick Start
 
+### Installation
+
+**Option 1: Automated Installation (Recommended)**
 ```bash
-# Install dependencies
+# Install all dependencies automatically
+./install-dependencies.sh
+
+# Or install specific components
+./install-dependencies.sh nodejs    # Install Node.js only  
+./install-dependencies.sh quarto    # Install Quarto only
+./install-dependencies.sh r         # Install R only
+./install-dependencies.sh r-packages # Install R packages only
+
+# Verify installation
+./install-dependencies.sh verify
+```
+
+**Option 2: Manual Installation**
+See [REQUIREMENTS.md](./REQUIREMENTS.md) for detailed manual installation instructions.
+
+### Usage
+```bash
+# Install dependencies (if not done above)
 npm install
 
 # Check implementation status
@@ -131,10 +152,28 @@ src/
 
 ## 🔧 Requirements
 
+### System Dependencies
 - **Node.js** 16+ (for tool execution)
 - **Git** (for version control features)
-- **R** (optional, for renv package management)
-- **Quarto** (for rendering and preview)
+- **R** 4.0+ (for renv package management and data processing)
+- **Quarto** 1.4+ (for rendering and preview)
+
+### Quick Setup
+```bash
+# Install all dependencies automatically
+./install-dependencies.sh
+
+# Or see REQUIREMENTS.md for manual installation
+```
+
+### R Package Dependencies
+Essential R packages (automatically installed with `install-dependencies.sh`):
+- `knitr`, `rmarkdown` (Quarto integration)
+- `renv` (package management)
+- `httr2`, `jsonlite` (API access)
+- `dplyr`, `readr` (data manipulation)
+- `ggplot2`, `plotly` (visualization)
+- `gt` (tables), `yaml`, `fs` (utilities)
 
 ## 🌟 Example Usage
 
