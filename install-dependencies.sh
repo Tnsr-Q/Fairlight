@@ -259,7 +259,14 @@ EOF
     
     echo "$R_SCRIPT" | R --slave
     
-    print_success "R packages installed successfully"
+    # Note about potential network issues
+    if [ $? -ne 0 ]; then
+        print_warning "R package installation may have encountered network issues."
+        print_status "This is common in restricted environments. Packages can be installed manually later with:"
+        print_status "R -e \"install.packages(c('knitr', 'rmarkdown', 'renv', 'httr2', 'jsonlite', 'dplyr', 'ggplot2', 'plotly', 'gt', 'yaml', 'fs'))\""
+    fi
+    
+    print_success "R packages installation completed"
 }
 
 # Function to install Node.js dependencies
