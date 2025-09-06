@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fairlight CMI Waveform Monitor</title>
+    <style>
+        @import url('data:text/css;charset=utf-8,@font-face{font-family:"Share Tech Mono";src:url("data:font/woff2;base64,") format("woff2");}');
+        
+        body {
+            background-color: #000000;
+            color: #39ff14;
+            font-family: "Courier New", monospace;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #39ff14;
+            padding-bottom: 20px;
+        }
+        
+        h1 {
+            color: #39ff14;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 2.5em;
+            margin: 0;
+            text-shadow: 0 0 10px #39ff14;
+        }
+        
+        .subtitle {
+            color: #39ff14;
+            font-size: 1.2em;
+            margin-top: 10px;
+            opacity: 0.8;
+        }
+        
+        .controls {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #39ff14;
+            background-color: rgba(57, 255, 20, 0.05);
+        }
+        
+        .controls label {
+            color: #39ff14;
+            display: block;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .controls select {
+            background-color: #000000;
+            border: 1px solid #39ff14;
+            color: #39ff14;
+            font-family: "Courier New", monospace;
+            padding: 10px;
+            width: 200px;
+        }
+        
+        .controls select:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+        }
+        
+        .waveform-container {
+            border: 2px solid #39ff14;
+            padding: 20px;
+            margin: 20px 0;
+            background-color: rgba(57, 255, 20, 0.02);
+            position: relative;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #39ff14;
+            opacity: 0.6;
+        }
+        
+        .waveform-plot {
+            width: 100%;
+            height: 400px;
+            position: relative;
+            background-color: #000000;
+            border: 1px solid #39ff14;
+        }
+        
+        .waveform-canvas {
+            width: 100%;
+            height: 100%;
+            background-color: #000000;
+        }
+        
+        .plot-title {
+            text-align: center;
+            color: #39ff14;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .axis-labels {
+            position: absolute;
+            color: #39ff14;
+            font-size: 12px;
+        }
+        
+        .x-label {
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .y-label {
+            left: 5px;
+            top: 50%;
+            transform: translateY(-50%) rotate(-90deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Fairlight CMI</h1>
+            <div class="subtitle">Waveform Monitor</div>
+        </div>
+        
+        <div class="controls">
+            <label for="channel-select">Channel (locked to one):</label>
+            <select id="channel-select">
+                <option value="amplitude">amplitude</option>
+            </select>
+        </div>
+        
+        <div class="waveform-container">
+            <div class="plot-title">FAIRLIGHT CMI WAVEFORM</div>
+            <div class="waveform-plot">
+                <canvas id="waveform-canvas" class="waveform-canvas"></canvas>
+                <div class="axis-labels x-label">TIME</div>
+                <div class="axis-labels y-label">AMPLITUDE</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Fairlight CMI Digital Audio Workstation • Retro Waveform Visualizer</p>
+        </div>
+    </div>
+
+    <script>
+        // Sample waveform data
+        const waveData = {
+            time: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+            amplitude: [0, 0.2, -0.4, 0.7, -0.3, 0.5, -0.6, 0.9, -0.1, 0]
+        };
+        
+        function drawWaveform() {
+            const canvas = document.getElementById('waveform-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            const width = canvas.width;
+            const height = canvas.height;
+            
+            // Clear canvas
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, width, height);
+            
+            // Draw grid
+            ctx.strokeStyle = 'rgba(57, 255, 20, 0.2)';
+            ctx.lineWidth = 0.5;
+            
+            // Vertical grid lines
+            for (let i = 0; i <= 10; i++) {
+                const x = (i / 10) * width;
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, height);
+                ctx.stroke();
+            }
+            
+            // Horizontal grid lines
+            for (let i = 0; i <= 10; i++) {
+                const y = (i / 10) * height;
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+            }
+            
+            // Draw center line
+            ctx.strokeStyle = 'rgba(57, 255, 20, 0.4)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(0, height / 2);
+            ctx.lineTo(width, height / 2);
+            ctx.stroke();
+            
+            // Draw waveform
+            ctx.strokeStyle = '#39ff14';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            const maxTime = Math.max(...waveData.time);
+            const maxAmp = Math.max(...waveData.amplitude.map(Math.abs));
+            
+            for (let i = 0; i < waveData.time.length; i++) {
+                const x = (waveData.time[i] / maxTime) * (width - 40) + 20;
+                const y = height / 2 - (waveData.amplitude[i] / maxAmp) * (height / 2 - 20);
+                
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            
+            ctx.stroke();
+            
+            // Draw data points
+            ctx.fillStyle = '#39ff14';
+            for (let i = 0; i < waveData.time.length; i++) {
+                const x = (waveData.time[i] / maxTime) * (width - 40) + 20;
+                const y = height / 2 - (waveData.amplitude[i] / maxAmp) * (height / 2 - 20);
+                
+                ctx.beginPath();
+                ctx.arc(x, y, 3, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+        }
+        
+        // Initialize the plot when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            drawWaveform();
+        });
+        
+        // Redraw on window resize
+        window.addEventListener('resize', function() {
+            drawWaveform();
+        });
+        
+        // Update plot when channel selection changes
+        document.getElementById('channel-select').addEventListener('change', function() {
+            drawWaveform();
+        });
+    </script>
+</body>
+</html>
